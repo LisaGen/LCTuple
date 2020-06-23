@@ -30,7 +30,8 @@ void SimCalorimeterHitBranches::initBranches( TTree* tree, const std::string& pr
   tree->Branch( (pre+"scpoy").c_str() , _scpoy , (pre+"scpoy["+pre+"nsch]/F").c_str() ) ;
   tree->Branch( (pre+"scpoz").c_str() , _scpoz , (pre+"scpoz["+pre+"nsch]/F").c_str() ) ;
   tree->Branch( (pre+"scene").c_str() , _scene , (pre+"scene["+pre+"nsch]/F").c_str() ) ;
-  
+  tree->Branch( (pre+"scmcc").c_str() , _scmcc , (pre+"scmcc["+pre+"nsch]/I").c_str() ) ;
+  tree->Branch( (pre+"sctim").c_str() , _sctim , (pre+"sctim["+pre+"nsch][50]/F").c_str() ) ;  
   
 }
 
@@ -51,7 +52,7 @@ void SimCalorimeterHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEv
   if (_writeparameters) CollectionBranches::fill(col, evt);
 
   _nsch  = col->getNumberOfElements() ;
-  
+
   for(int i=0 ; i < _nsch ; ++i){
     
     lcio::SimCalorimeterHit* hit = static_cast<lcio::SimCalorimeterHit*>( col->getElementAt(i) ) ;
@@ -64,8 +65,13 @@ void SimCalorimeterHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEv
     _scpoy[i] = hit->getPosition()[1] ;
     _scpoz[i] = hit->getPosition()[2] ;
     _scene[i] = hit->getEnergy() ;
-    
+    _scmcc[i] = hit->getNMCContributions() ;
+  	
+    for (int j=0; j < hit->getNMCContributions(); ++j) {
+      _sctim[i][j] = hit->getTimeCont(j);
+    }  
   }
+  	
 }
 
 
