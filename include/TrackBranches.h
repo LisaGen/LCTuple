@@ -64,6 +64,8 @@ private:
   float _tsrpy[ LCT_TRACKSTATE_MAX ]  {} ;
   float _tsrpz[ LCT_TRACKSTATE_MAX ]  {} ;
 
+  std::vector<int> _trhit {};
+
   // EVENT::TrackVec _tracks ;
   // EVENT::TrackerHitVec _hits ;
   

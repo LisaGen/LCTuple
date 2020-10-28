@@ -16,6 +16,8 @@ void TrackBranches::initBranches( TTree* tree, const std::string& pre){
     throw lcio::Exception("  TrackBranches::initBranches - invalid tree pointer !!! " ) ;
   }
 
+  _trhit = std::vector<int>();
+  
   if (_writeparameters) CollectionBranches::initBranches(tree, (pre+"tr").c_str());
 
   tree->Branch( (pre+"ntrk").c_str() , &_ntrk ,  (pre+"ntrk/I").c_str() ) ;
@@ -27,6 +29,7 @@ void TrackBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"trndf").c_str() , _trndf , (pre+"trndf["+pre+"ntrk]/I").c_str() ) ;
   tree->Branch( (pre+"tredx").c_str() , _tredx , (pre+"tredx["+pre+"ntrk]/F").c_str() ) ;
   tree->Branch( (pre+"trede").c_str() , _trede , (pre+"trede["+pre+"ntrk]/F").c_str() ) ;
+  tree->Branch( (pre+"trhit").c_str() , &_trhit );
   tree->Branch( (pre+"trrih").c_str() , _trrih , (pre+"trrih["+pre+"ntrk]/F").c_str() ) ;
   tree->Branch( (pre+"trshn").c_str() , _trshn , (pre+"trshn["+pre+"ntrk][12]/I").c_str() ) ;
   tree->Branch( (pre+"trnts").c_str() , _trnts , (pre+"trnts["+pre+"ntrk]/I").c_str() ) ;
@@ -147,6 +150,12 @@ void TrackBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ){
     
     for( int j=0; j<nshn ; ++j )
       _trshn[ i ][ j ]  = trk->getSubdetectorHitNumbers()[j] ;
+
+    _trhit.clear();
+    for( unsigned int ihit=0; ihit<trk->getTrackerHits().size() ; ++ihit ){
+      int hit_index = ( trk->getTrackerHits().at(ihit) ? trk->getTrackerHits().at(ihit)->ext<CollIndex>() : -1 );
+      _trhit.push_back(hit_index);
+    }
     
   }
 }
