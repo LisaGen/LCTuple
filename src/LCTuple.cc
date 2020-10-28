@@ -523,6 +523,9 @@ void LCTuple::processEvent( LCEvent * evt ) {
 
   addIndexToCollection( pfoRelCol ) ;
 
+  addIndexToCollection( trhCol ) ;
+
+  addIndexToCollection( sthCol ) ;
 
   //================================================
   //    fill the ntuple arrays 
