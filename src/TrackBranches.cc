@@ -153,7 +153,9 @@ void TrackBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ){
 
     _trhit.clear();
     for( unsigned int ihit=0; ihit<trk->getTrackerHits().size() ; ++ihit ){
-      int hit_index = ( trk->getTrackerHits().at(ihit) ? trk->getTrackerHits().at(ihit)->ext<CollIndex>() : -1 );
+      int hit_index = ( trk->getTrackerHits().at(ihit) ?
+			trk->getTrackerHits().at(ihit)->ext<CollIndex>() - 1 :
+			-1 );
       _trhit.push_back(hit_index);
     }
     
