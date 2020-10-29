@@ -44,6 +44,8 @@ private:
   float _tredx[ LCT_TRACK_MAX ]  {} ;
   float _trede[ LCT_TRACK_MAX ]  {} ;
   float _trrih[ LCT_TRACK_MAX ]  {} ;
+  int   _trthn[ LCT_TRACK_MAX ]  {} ;     // total number of hits
+  int   _trthi[ LCT_TRACK_MAX ][50]  {} ; // track hit indices
   int   _trshn[ LCT_TRACK_MAX ][12]  {} ;
   int   _trnts[ LCT_TRACK_MAX ]  {} ;
   int   _trfts[ LCT_TRACK_MAX ]  {} ;
@@ -63,8 +65,6 @@ private:
   float _tsrpx[ LCT_TRACKSTATE_MAX ]  {} ;
   float _tsrpy[ LCT_TRACKSTATE_MAX ]  {} ;
   float _tsrpz[ LCT_TRACKSTATE_MAX ]  {} ;
-
-  std::vector<int> _trhit {};
 
   // EVENT::TrackVec _tracks ;
   // EVENT::TrackerHitVec _hits ;
