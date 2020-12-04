@@ -28,6 +28,8 @@ void TrackBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"tredx").c_str() , _tredx , (pre+"tredx["+pre+"ntrk]/F").c_str() ) ;
   tree->Branch( (pre+"trede").c_str() , _trede , (pre+"trede["+pre+"ntrk]/F").c_str() ) ;
   tree->Branch( (pre+"trrih").c_str() , _trrih , (pre+"trrih["+pre+"ntrk]/F").c_str() ) ;
+  tree->Branch( (pre+"trthn").c_str() , _trthn , (pre+"trthn["+pre+"ntrk]/I").c_str() ) ;
+  tree->Branch( (pre+"trthi").c_str() , _trthi , (pre+"trthi["+pre+"ntrk][50]/I").c_str() ) ;
   tree->Branch( (pre+"trshn").c_str() , _trshn , (pre+"trshn["+pre+"ntrk][12]/I").c_str() ) ;
   tree->Branch( (pre+"trnts").c_str() , _trnts , (pre+"trnts["+pre+"ntrk]/I").c_str() ) ;
   tree->Branch( (pre+"trfts").c_str() , _trfts , (pre+"trfts["+pre+"ntrk]/I").c_str() ) ;
@@ -147,28 +149,18 @@ void TrackBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ){
     
     for( int j=0; j<nshn ; ++j )
       _trshn[ i ][ j ]  = trk->getSubdetectorHitNumbers()[j] ;
+
+
+    _trthn[ i ] = trk->getTrackerHits().size();
+
+    for( unsigned int ihit=0; ihit<trk->getTrackerHits().size() ; ++ihit ){
+      int hit_index = ( trk->getTrackerHits().at(ihit) ?
+			trk->getTrackerHits().at(ihit)->ext<CollIndex>() - 1 :
+			-1 );
+
+      _trthi[ i ][ ihit ] = hit_index;
+
+    }
     
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
