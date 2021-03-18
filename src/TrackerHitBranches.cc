@@ -5,6 +5,7 @@
 #include "EVENT/LCCollection.h"
 #include "EVENT/TrackerHit.h"
 #include "EVENT/MCParticle.h"
+#include "EVENT/SimTrackerHit.h"
 #include "streamlog/streamlog.h"
 
 #include "TTree.h"
@@ -19,6 +20,7 @@ void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre){
 
   if (_writeparameters) CollectionBranches::initBranches(tree, (pre+"st").c_str());
 
+  // -- Tracker hits (clusters of)
   tree->Branch( (pre+"ntrh").c_str() , &_ntrh , (pre+"ntrh/I").c_str() ) ;
 
   tree->Branch( (pre+"thori").c_str() , _thori , (pre+"thori["+pre+"ntrh]/I").c_str() ) ;
@@ -35,6 +37,21 @@ void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"thtyp").c_str() , _thtyp , (pre+"thtyp["+pre+"ntrh]/F").c_str() ) ;
   tree->Branch( (pre+"thqua").c_str() , _thqua , (pre+"thqua["+pre+"ntrh]/F").c_str() ) ;
   tree->Branch( (pre+"thede").c_str() , _thede , (pre+"thede["+pre+"ntrh]/F").c_str() ) ;
+  tree->Branch( (pre+"thplen").c_str(), _thplen, (pre+"thplen["+pre+"ntrh]/F").c_str()) ;
+  tree->Branch( (pre+"thsrc").c_str(), _thsrc, (pre+"thsrc["+pre+"ntrh]/I").c_str()) ;
+
+  // index of rawHits() constituents (if stored); loop over [_thidx0;thclen-1]
+  tree->Branch( (pre+"thcidx").c_str() , _thcidx , (pre+"thcidx["+pre+"ntrh]/I").c_str() ) ;
+  tree->Branch( (pre+"thclen").c_str() , _thclen , (pre+"thclen["+pre+"ntrh]/I").c_str() ) ;
+
+  // -- Tracker rawHits constutuents (individual pixels/strips)
+  tree->Branch( (pre+"ntrc").c_str() , &_ntrc , (pre+"ntrc/I").c_str() ) ;
+
+  tree->Branch( (pre+"tcedp").c_str() , _tcedp , (pre+"tcedp["+pre+"ntrc]/F").c_str() ) ;
+  tree->Branch( (pre+"tctim").c_str() , _tctim , (pre+"tctim["+pre+"ntrc]/F").c_str() ) ;
+  //relative position within the sensitive element in units of segmentation, up to two local coordinates
+  tree->Branch( (pre+"tcrp0").c_str() , _tcrp0 , (pre+"tcrp0["+pre+"ntrc]/I").c_str() ) ;
+  tree->Branch( (pre+"tcrp1").c_str() , _tcrp1 , (pre+"tcrp1["+pre+"ntrc]/I").c_str() ) ;
 
 }
   
@@ -57,6 +74,7 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
   if (_writeparameters) CollectionBranches::fill(col, evt);
 
   _ntrh  = col->getNumberOfElements() ;
+  _ntrc = 0; //updated below
   
   for(int i=0 ; i < _ntrh ; ++i){
     
@@ -80,7 +98,46 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
     _thqua[ i ] = hit->getQuality()   ;
     _thede[ i ] = hit->getEDepError() ;
     
-    //not yet...    virtual const LCObjectVec & getRawHits() const = 0;
+    const lcio::LCObjectVec &rawHits = hit->getRawHits();
+    
+    _thsrc [ i ] = -1;
+    _thplen[ i ] = -1;
+    float sourcePoll[3] = {0.0, 0.0, 0.0}; //see which energy deposit is dominant
+    for (size_t j=_ntrc; j<rawHits.size() or j >= LCT_TRACKERRAWHIT_MAX-1; ++j) {
+      lcio::SimTrackerHit *hitConstituent = dynamic_cast<lcio::SimTrackerHit*>( rawHits[i] );
+      if (hitConstituent) {
+        _tcedp[j] = hitConstituent->getEDep();
+        _tctim[j] = hitConstituent->getTime();
+        _thplen[i] += hitConstituent->getPathLength();
+        if (hitConstituent->isOverlay()) {
+          sourcePoll[2] += hitConstituent->getEDep();
+        } else if (hitConstituent->isProducedBySecondary()) {
+          sourcePoll[1] += hitConstituent->getEDep();
+        } else {
+          sourcePoll[0] += hitConstituent->getEDep();
+        }
+        // missing: incidence angle, momentum
+
+        //compute relative position
+        const double *localPos = hitConstituent->getPosition();
+        _tcrp0[j] = static_cast<int>(localPos[0]);
+        _tcrp1[j] = static_cast<int>(localPos[1]);
+      }
+      //check which energy deposit dominates
+      if ((sourcePoll[0] > sourcePoll[1]) && (sourcePoll[0] > sourcePoll[2])) {
+        //dominated by prompt particle
+        _thsrc [ i ] = 0;
+      } else if (sourcePoll[1] > sourcePoll[2]) {
+        //dominated by secondary particle
+        _thsrc [ i ] = 1; 
+      } else if (sourcePoll[2] > 0) {
+        //dominated by Overlay
+        _thsrc [ i ] = 2;
+      }
+    }
+    //update total number of constituents
+    _ntrc += rawHits.size();
+    
   }
 }
 
