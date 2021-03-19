@@ -28,6 +28,9 @@ public:
   virtual void initBranches( TTree* tree, const std::string& prefix="" ) ;
   
   virtual void fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ) ;
+
+  //Add fill method to include individual constituents (hits)
+  virtual void fill(const EVENT::LCCollection* col, const EVENT::LCCollection* hitsCol, EVENT::LCEvent* evt ) ;
   
   virtual ~TrackerHitBranches() {} ;
   

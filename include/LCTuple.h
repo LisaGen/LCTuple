@@ -90,6 +90,7 @@ class LCTuple : public Processor {
   std::string _cluColName {};
   std::string _sthColName {};
   std::string _trhColName {};
+  std::string _thcColName {};
   std::string _schColName {};
   std::string _cahColName {};
   std::string _vtxColName {};

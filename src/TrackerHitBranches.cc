@@ -11,7 +11,7 @@
 #include "TTree.h"
 
 
-void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre){
+void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre ){
 
   if( tree == 0 ){
 
@@ -52,14 +52,19 @@ void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre){
   //relative position within the sensitive element in units of segmentation, up to two local coordinates
   tree->Branch( (pre+"tcrp0").c_str() , _tcrp0 , (pre+"tcrp0["+pre+"ntrc]/I").c_str() ) ;
   tree->Branch( (pre+"tcrp1").c_str() , _tcrp1 , (pre+"tcrp1["+pre+"ntrc]/I").c_str() ) ;
-
+  
 }
   
 
 void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ){
+  //call the other method without a hits collection
+  fill(col, 0, evt);
+}
+
+void TrackerHitBranches::fill(const EVENT::LCCollection* col, const EVENT::LCCollection* hitsCol, EVENT::LCEvent* evt ){
   
 
-  streamlog_out( DEBUG ) << " TrackerHitBranches::fill called ... (col: " << col << ")" << std::endl ;
+  streamlog_out( DEBUG ) << " TrackerHitBranches::fill called ... (col: " << col << ", hits col: " << hitsCol << ")" << std::endl ;
 
   if( !col ) return ;
 
@@ -102,13 +107,18 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
     
     _thsrc [ i ] = -1;
     _thplen[ i ] = -1;
+    _thcidx[ i ] = _ntrc;
+    float maxEDep = -1;
     float sourcePoll[3] = {0.0, 0.0, 0.0}; //see which energy deposit is dominant
-    for (size_t j=_ntrc; j<rawHits.size() or j >= LCT_TRACKERRAWHIT_MAX-1; ++j) {
-      lcio::SimTrackerHit *hitConstituent = dynamic_cast<lcio::SimTrackerHit*>( rawHits[i] );
+    for (size_t j=0; j<rawHits.size() and (j+_ntrc) < LCT_TRACKERRAWHIT_MAX; ++j) {
+      lcio::SimTrackerHit *hitConstituent = dynamic_cast<lcio::SimTrackerHit*>( rawHits[j] );
       if (hitConstituent) {
-        _tcedp[j] = hitConstituent->getEDep();
-        _tctim[j] = hitConstituent->getTime();
-        _thplen[i] += hitConstituent->getPathLength();
+        _tcedp[j+_ntrc] = hitConstituent->getEDep();
+        _tctim[j+_ntrc] = hitConstituent->getTime();
+        if (hitConstituent->getEDep() > maxEDep) {
+          maxEDep = hitConstituent->getEDep();
+          _thplen[i] = hitConstituent->getPathLength(); //truth-based
+        }
         if (hitConstituent->isOverlay()) {
           sourcePoll[2] += hitConstituent->getEDep();
         } else if (hitConstituent->isProducedBySecondary()) {
@@ -120,8 +130,8 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
 
         //compute relative position
         const double *localPos = hitConstituent->getPosition();
-        _tcrp0[j] = static_cast<int>(localPos[0]);
-        _tcrp1[j] = static_cast<int>(localPos[1]);
+        _tcrp0[j+_ntrc] = localPos[0];
+        _tcrp1[j+_ntrc] = localPos[1];
       }
       //check which energy deposit dominates
       if ((sourcePoll[0] > sourcePoll[1]) && (sourcePoll[0] > sourcePoll[2])) {
@@ -137,7 +147,7 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
     }
     //update total number of constituents
     _ntrc += rawHits.size();
-    
+    _thclen [ i ] = rawHits.size();
   }
 }
 
