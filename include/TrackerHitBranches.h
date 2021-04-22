@@ -28,6 +28,9 @@ public:
   virtual void initBranches( TTree* tree, const std::string& prefix="" ) ;
   
   virtual void fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ) ;
+
+  //Add fill method to include individual constituents (hits)
+  virtual void fill(const EVENT::LCCollection* col, const EVENT::LCCollection* hitsCol, EVENT::LCEvent* evt ) ;
   
   virtual ~TrackerHitBranches() {} ;
   
@@ -49,6 +52,18 @@ private:
   float  _thtyp[ LCT_TRACKERHIT_MAX ]  {} ;
   float  _thqua[ LCT_TRACKERHIT_MAX ]  {} ;
   float  _thede[ LCT_TRACKERHIT_MAX ]  {} ;
+  float  _thplen[ LCT_TRACKERHIT_MAX ]  {} ;
+  int  _thsrc[ LCT_TRACKERHIT_MAX ]  {} ;
+
+
+  int _thcidx[ LCT_SIMTRACKERHIT_MAX] {};
+  int _thclen[ LCT_SIMTRACKERHIT_MAX] {};
+
+  int _ntrc {};
+  float _tcedp[ LCT_TRACKERRAWHIT_MAX ] {};
+  float _tctim[ LCT_TRACKERRAWHIT_MAX ] {};
+  int _tcrp0[ LCT_TRACKERRAWHIT_MAX ] {};
+  int _tcrp1[ LCT_TRACKERRAWHIT_MAX ] {};
 
 } ;
 

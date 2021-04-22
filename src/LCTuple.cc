@@ -95,21 +95,21 @@ LCTuple::LCTuple() : Processor("LCTuple") {
 			   std::string("")
 			   );
 
-  registerProcessorParameter( "WriteMCParticleCollectionParameters" ,
-                              "Switch to write out collection parameters",
+    registerProcessorParameter( "WriteMCParticleCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _mcpColWriteParameters ,
 			      false
 			      );
   
-  registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
-			   "RecoParticleCollection" , 
-			   "Name of the ReconstructedParticle collection"  ,
-			   _recColName ,
-			   std::string("")
-			   );
+    registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
+			      "RecoParticleCollection" , 
+			      "Name of the ReconstructedParticle collection"  ,
+			      _recColName ,
+			      std::string("")
+			      );
 
-  registerProcessorParameter( "WriteRecoParticleCollectionParameters" ,
-                              "Switch to write out collection parameters",
+    registerProcessorParameter( "WriteRecoParticleCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _recColWriteParameters ,
 			      false
 			      );
@@ -121,20 +121,20 @@ LCTuple::LCTuple() : Processor("LCTuple") {
 			   std::string("")
 			   );
 
-  registerProcessorParameter( "WriteJetCollectionParameters" ,
-                              "Switch to write out collection parameters",
+    registerProcessorParameter( "WriteJetCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _jetColWriteParameters ,
 			      false
 			      );
 			      
-  registerProcessorParameter( "JetCollectionExtraParameters" ,
-                              "Switch to write out extra parameters calculated using information from Jet Finder",
+    registerProcessorParameter( "JetCollectionExtraParameters" ,
+            "Switch to write out extra parameters calculated using information from Jet Finder",
 			      _jetColExtraParameters ,
 			      false
 			      );
 			      
-  registerProcessorParameter( "JetCollectionTaggingParameters" ,
-                              "Switch to write out jet parameters coming from LCFIPlus tagging processor",
+    registerProcessorParameter( "JetCollectionTaggingParameters" ,
+            "Switch to write out jet parameters coming from LCFIPlus tagging processor",
 			      _jetColTaggingParameters ,
 			      false
 			      );
@@ -147,18 +147,18 @@ registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
 			   std::string("")
 			   );
 
-registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
-                              "Switch to write out collection parameters",
+  registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _isolepColWriteParameters ,
 			      false
 			      );
 
-  registerInputCollection( LCIO::VERTEX,
-			   "VertexCollection" , 
-			   "Name of the Vertex collection"  ,
-			   _vtxColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::VERTEX,
+		   "VertexCollection" , 
+		   "Name of the Vertex collection"  ,
+		   _vtxColName ,
+		   std::string("")
+		   );
   
   registerProcessorParameter( "WriteVertexCollectionParameters" ,
                               "Switch to write out collection parameters",
@@ -166,12 +166,12 @@ registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
 			      false
 			      );
 
-  registerInputCollection( LCIO::TRACK,
-			   "TrackCollection" , 
-			   "Name of the Track collection"  ,
-			   _trkColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::TRACK,
+	     "TrackCollection" , 
+	     "Name of the Track collection"  ,
+	     _trkColName ,
+	     std::string("")
+  	   );
 
   registerProcessorParameter( "WriteTrackCollectionParameters" ,
                               "Switch to write out collection parameters",
@@ -179,12 +179,12 @@ registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
 			      false
 			      );
 
-  registerInputCollection( LCIO::CLUSTER,
-			   "ClusterCollection" , 
-			   "Name of the Cluster collection"  ,
-			   _cluColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::CLUSTER,
+  	   "ClusterCollection" , 
+		   "Name of the Cluster collection"  ,
+		   _cluColName ,
+		   std::string("")
+		   );
 
   registerProcessorParameter( "WriteClusterCollectionParameters" ,
                               "Switch to write out collection parameters",
@@ -192,45 +192,52 @@ registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
 			      false
 			      );
 
-  registerInputCollection( LCIO::SIMTRACKERHIT,
-			   "SimTrackerHitCollection" , 
-			   "Name of the SimTrackerHit collection"  ,
-			   _sthColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::SIMTRACKERHIT,
+  	   "SimTrackerHitCollection" , 
+		   "Name of the SimTrackerHit collection"  ,
+		   _sthColName ,
+		   std::string("")
+		   );
 
-  registerInputCollection( LCIO::TRACKERHIT,
-			   "TrackerHitCollection" , 
-			   "Name of the TrackerHit collection"  ,
-			   _trhColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::TRACKERHIT,
+		   "TrackerHitCollection" , 
+		   "Name of the TrackerHit collection"  ,
+		   _trhColName ,
+		   std::string("")
+		   );
   
-   registerProcessorParameter( "WriteSimTrackerHitCollectionParameters" ,
-                              "Switch to write out collection parameters",
+registerInputCollection( LCIO::SIMTRACKERHIT,
+	    "TrackerHitConstituentsCollection" , 
+	    "Name of the (Sim)TrackerHit collection for constituents (pixels or strips)"  ,
+	    _thcColName ,
+	    std::string("")
+	    );
+
+  registerProcessorParameter( "WriteSimTrackerHitCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _sthColWriteParameters ,
 			      false
 			      );
 
- registerProcessorParameter( "WriteTrackerHitCollectionParameters" ,
-                              "Switch to write out collection parameters",
+  registerProcessorParameter( "WriteTrackerHitCollectionParameters" ,
+            "Switch to write out collection parameters",
 			      _trhColWriteParameters ,
 			      false
 			      );
 
-  registerInputCollection( LCIO::SIMCALORIMETERHIT,
-			   "SimCalorimeterHitCollection" , 
-			   "Name of the SimCalorimeterHit collection"  ,
-			   _schColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::SIMCALORIMETERHIT,
+		   "SimCalorimeterHitCollection" , 
+		   "Name of the SimCalorimeterHit collection"  ,
+		   _schColName ,
+		   std::string("")
+		   );
 
-  registerInputCollection( LCIO::CALORIMETERHIT,
-			   "CalorimeterHitCollection" , 
-			   "Name of the CalorimeterHit collection"  ,
-			   _cahColName ,
-			   std::string("")
-			   );
+registerInputCollection( LCIO::CALORIMETERHIT,
+  	   "CalorimeterHitCollection" , 
+		   "Name of the CalorimeterHit collection"  ,
+		   _cahColName ,
+		   std::string("")
+		   );
 
   registerProcessorParameter( "WriteSimCalorimeterHitCollectionParameters" ,
                               "Switch to write out collection parameters",
@@ -480,6 +487,8 @@ void LCTuple::processEvent( LCEvent * evt ) {
 
   LCCollection* trhCol =  getCollection ( evt , _trhColName ) ;
 
+  LCCollection* thcCol = getCollection ( evt, _thcColName ) ;
+
   LCCollection* schCol =  getCollection ( evt , _schColName ) ;
 
   LCCollection* cahCol =  getCollection ( evt , _cahColName ) ;
@@ -552,7 +561,7 @@ void LCTuple::processEvent( LCEvent * evt ) {
   
   if( sthCol ) _sthBranches->fill( sthCol , evt ) ;
 
-  if( trhCol ) _trhBranches->fill( trhCol , evt ) ;
+  if( trhCol ) dynamic_cast<TrackerHitBranches*>(_trhBranches)->fill( trhCol , thcCol, evt ) ;
   
   if( schCol ) _schBranches->fill( schCol , evt ) ;
   
