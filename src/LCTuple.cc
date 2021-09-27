@@ -210,8 +210,14 @@ registerProcessorParameter( "WriteIsoLepCollectionParameters" ,
 			   _trhColName ,
 			   std::string("")
 			   );
+  registerInputCollection( LCIO::SIMTRACKERHIT,
+ 	    "TrackerHitConstituentsCollection" ,
+ 	    "Name of the (Sim)TrackerHit collection for constituents (pixels or strips)"  ,
+ 	    _thcColName ,
+ 	    std::string("")
+ 	    );
   
-   registerProcessorParameter( "WriteSimTrackerHitCollectionParameters" ,
+  registerProcessorParameter( "WriteSimTrackerHitCollectionParameters" ,
                               "Switch to write out collection parameters",
 			      _sthColWriteParameters ,
 			      false
@@ -486,6 +492,8 @@ void LCTuple::processEvent( LCEvent * evt ) {
 
   LCCollection* trhCol =  getCollection ( evt , _trhColName ) ;
 
+  LCCollection* thcCol = getCollection ( evt, _thcColName ) ;
+
   LCCollection* schCol =  getCollection ( evt , _schColName ) ;
 
   LCCollection* cahCol =  getCollection ( evt , _cahColName ) ;
@@ -558,8 +566,8 @@ void LCTuple::processEvent( LCEvent * evt ) {
   
   if( sthCol ) _sthBranches->fill( sthCol , evt ) ;
 
-  if( trhCol ) _trhBranches->fill( trhCol , evt ) ;
-  
+  if( trhCol ) dynamic_cast<TrackerHitBranches*>(_trhBranches)->fill( trhCol , thcCol, evt ) ;
+
   if( schCol ) _schBranches->fill( schCol , evt ) ;
   
   if( cahCol ) _cahBranches->fill( cahCol , evt ) ;
