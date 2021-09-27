@@ -90,7 +90,6 @@ class LCTuple : public Processor {
   std::string _cluColName {};
   std::string _sthColName {};
   std::string _trhColName {};
-  std::string _thcColName {};
   std::string _schColName {};
   std::string _cahColName {};
   std::string _vtxColName {};
@@ -114,7 +113,7 @@ class LCTuple : public Processor {
 
   bool _jetColExtraParameters {};                 /* Enables writing extra jet parameters */
   bool _jetColTaggingParameters {};               /* Enables writing jet tagging parameters */
-
+  bool _jetColDaughtersParameters {};
 
   StringVec _relColNames {};
   StringVec _relPrefixes {};

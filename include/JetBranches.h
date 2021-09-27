@@ -73,6 +73,7 @@ class JetBranches : public CollectionBranches
 	  // Following two functions are used to access parameters set in a steering file
 	  void writeExtraParameters(bool setextraparameters){ _writeExtraParameters = setextraparameters; };
 	  void writeTaggingParameters(bool settaggingparameters){ _writeTaggingParameters = settaggingparameters; };
+	  void writeDaughtersParameters(bool setdaughtersparameters){ _writeDaughtersParameters = setdaughtersparameters; };
 
 	  /* ====================  MUTATORS      ======================================= */
 
@@ -87,7 +88,8 @@ class JetBranches : public CollectionBranches
 	  /* ====================  DATA MEMBERS  ======================================= */
 
 	  bool _writeExtraParameters {} ;               /* Whether to write calculated parameters */
-      bool _writeTaggingParameters {} ;             /* Whether to write parameters from tagging processor */
+          bool _writeTaggingParameters {} ;             /* Whether to write parameters from tagging processor */
+          bool _writeDaughtersParameters {} ;             /* Whether to write daughters */
 
       unsigned int    _nj {} ;                     /* Number of Jets */
 
@@ -141,6 +143,21 @@ class JetBranches : public CollectionBranches
 
       unsigned int _njetpfo[ LCT_JET_MAX ] {};             /* Number of PFOs in a jet */
       int _jetpfoori[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs collection indexes for each jet */
+
+      unsigned int _ndaughters[ LCT_JET_MAX ] {};             /* Number of PFOs in a jet */
+      unsigned int _ntracks[ LCT_JET_MAX ] {};             /* Number of tracks in a jet */
+      unsigned int _nclusters[ LCT_JET_MAX ] {};             /* Number of clusters in a jet */
+      float _daughters_PX[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs PX */
+      float _daughters_PY[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs PY */
+      float _daughters_PZ[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs PZ */
+      float _daughters_E[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs E */
+      float _daughters_M[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs M */
+      float _daughters_Q[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs Q */
+      float _daughters_trackD0[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs track D0 */
+      float _daughters_trackPhi[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs track Phi */
+      float _daughters_trackOmega[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs track Omega */
+      float _daughters_trackZ0[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs track Z0 */
+      float _daughters_trackTanLambda[ LCT_JET_MAX ][ LCT_JET_PARTICLES_MAX ] {} ; /* PFOs track TanLambda */
 
 
 }; /* -----  end of class JetBranches  ----- */

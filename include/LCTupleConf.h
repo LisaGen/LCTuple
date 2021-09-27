@@ -31,13 +31,12 @@ struct CollID : public lcrtrel::LCIntExtension<CollID> {} ;
 #define LCT_RELATION_MAX          1000000
 #define LCT_SIMTRACKERHIT_MAX     1000000
 #define LCT_TRACKERHIT_MAX        1000000
-#define LCT_TRACKERRAWHIT_MAX     5000000
 #define LCT_SIMCALORIMETERHIT_MAX 1000000
 #define LCT_CALORIMETERHIT_MAX    1000000
 #define LCT_PARTICLEID_MAX        1000000
 #define LCT_VERTEX_MAX               1000
 #define LCT_JET_MAX				       20
-#define LCT_JET_PARTICLES_MAX				  500
+#define LCT_JET_PARTICLES_MAX			       20
 #define LCT_ISOLEP_MAX             100000
 
 #define LCT_STRING_MAX       1024
