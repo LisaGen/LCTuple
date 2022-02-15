@@ -46,6 +46,7 @@ private:
   double _thpoz[ LCT_TRACKERHIT_MAX ]  {} ;
   float  _thedp[ LCT_TRACKERHIT_MAX ]  {} ;
   float  _thtim[ LCT_TRACKERHIT_MAX ]  {} ;
+  int    _thdet[ LCT_TRACKERHIT_MAX ]  {} ;
 
   float  _thcov[ LCT_TRACKERHIT_MAX ][6]  {} ;
 

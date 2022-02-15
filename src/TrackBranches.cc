@@ -31,6 +31,7 @@ void TrackBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"trthn").c_str() , _trthn , (pre+"trthn["+pre+"ntrk]/I").c_str() ) ;
   tree->Branch( (pre+"trthi").c_str() , _trthi , (pre+"trthi["+pre+"ntrk][50]/I").c_str() ) ;
   tree->Branch( (pre+"trshn").c_str() , _trshn , (pre+"trshn["+pre+"ntrk][12]/I").c_str() ) ;
+  tree->Branch( (pre+"trthd").c_str() , _trthd , (pre+"trthd["+pre+"ntrk][50]/I").c_str() ) ;
   tree->Branch( (pre+"trnts").c_str() , _trnts , (pre+"trnts["+pre+"ntrk]/I").c_str() ) ;
   tree->Branch( (pre+"trfts").c_str() , _trfts , (pre+"trfts["+pre+"ntrk]/I").c_str() ) ;
   tree->Branch( (pre+"trsip").c_str() , _trsip , (pre+"trsip["+pre+"ntrk]/I").c_str() ) ;
@@ -157,7 +158,10 @@ void TrackBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt ){
       int hit_index = ( trk->getTrackerHits().at(ihit) ?
 			trk->getTrackerHits().at(ihit)->ext<CollIndex>() - 1 :
 			-1 );
-
+      unsigned det = ( trk->getTrackerHits().at(ihit) ?
+                             (unsigned) (trk->getTrackerHits().at(ihit)->getCellID0() & 0x1f) :
+                              0 );
+      _trthd[ i ][ ihit ] = det ;
       _trthi[ i ][ ihit ] = hit_index;
 
     }
