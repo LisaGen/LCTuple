@@ -56,7 +56,7 @@ void JetBranches::initBranches( TTree* tree, const std::string& pre){
 
    if (_writeparameters) CollectionBranches::initBranches(tree, (pre+"j").c_str());
 
-   tree->Branch( (pre+"nj").c_str() , &_nj ,  (pre+"njet/I").c_str() ) ;
+   tree->Branch( (pre+"njet").c_str() , &_njet ,  (pre+"njet/I").c_str() ) ;
 
 
    // ------------ Default Jet parameters ------------------//
@@ -148,7 +148,7 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
    double   Etot = evt->getParameters().getFloatVal("Energy");
   
    // Initilize local variables/arrays to zero
-   _nj = 0;
+   _njet = 0;
    _jevis  = 0;
    _jPxvis = 0;
    _jPyvis = 0;
@@ -226,8 +226,8 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
    if (_writeparameters) CollectionBranches::fill(col, evt);
 
    // Get number of jets
-   _nj  = col->getNumberOfElements() ;
-   streamlog_out(DEBUG4) << "number of jets: " << _nj << '\n';
+   _njet  = col->getNumberOfElements() ;
+   streamlog_out(DEBUG4) << "number of jets: " << _njet << '\n';
 
    //--------- Flavour tagging -------------------------------------------------
    // Write flavor tagginf parameters if it is enabled in the steering file
@@ -247,7 +247,7 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
    std::vector<lcio::ParticleID*> pidV ;
    pidV.reserve(  col->getNumberOfElements() * 4 ) ;
 
-   for(size_t i=0 ; i < _nj ; ++i ) {
+   for(size_t i=0 ; i < _njet ; ++i ) {
 
 	  lcio::ReconstructedParticle* jet = static_cast<lcio::ReconstructedParticle*>( col->getElementAt( i) ) ;
 
@@ -267,7 +267,7 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 
 
    //------  fill the Jets ----------------------------
-   for(size_t i=0 ; i < _nj ; ++i) {
+   for(size_t i=0 ; i < _njet ; ++i) {
 
 	  lcio::ReconstructedParticle* jet = static_cast<lcio::ReconstructedParticle*>( col->getElementAt(i) ) ;
 
