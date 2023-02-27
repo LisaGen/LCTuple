@@ -46,6 +46,7 @@ private:
   float _trrih[ LCT_TRACK_MAX ]  {} ;
   int   _trthn[ LCT_TRACK_MAX ]  {} ;     // total number of hits
   int   _trthi[ LCT_TRACK_MAX ][50]  {} ; // track hit indices
+  int   _trthd[ LCT_TRACK_MAX ][50]  {} ; // track hit subdetector
   int   _trshn[ LCT_TRACK_MAX ][12]  {} ;
   int   _trnts[ LCT_TRACK_MAX ]  {} ;
   int   _trfts[ LCT_TRACK_MAX ]  {} ;

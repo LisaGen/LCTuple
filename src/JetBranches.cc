@@ -87,26 +87,27 @@ void JetBranches::initBranches( TTree* tree, const std::string& pre){
 
 	  tree->Branch( (pre+"jnpid" ).c_str() , &_jnpid   ,  (pre+"jnpid/I").c_str() ) ;
 	  tree->Branch( (pre+"npfojet").c_str(), &_njetpfo , (pre+"npfojet["+pre+"njet]/I").c_str() ) ;
-    tree->Branch( (pre+"rcidx").c_str(), &_jetpfoori , (pre+"rcidx["+pre+"njet][20]/I").c_str() ) ;
+    tree->Branch( (pre+"rcidx").c_str(), &_jetpfoori , (pre+"rcidx["+pre+"njet][LCT_JET_PARTICLES_MAX]/I").c_str() ) ;
    } // end if
 
    //PFO branches
 
    if(_writeDaughtersParameters) {
+
           tree->Branch( (pre+"ndaughters").c_str(), _ndaughters , (pre+"ndaughters["+pre+"njet]/I").c_str() ) ;
-	  tree->Branch( (pre+"ntracks").c_str(), _ntracks , (pre+"ntracks["+pre+"njet]/I").c_str() ) ;
-	  tree->Branch( (pre+"nclusters").c_str(), _nclusters , (pre+"nclusters["+pre+"njet]/I").c_str() ) ;
-          tree->Branch( (pre+"daughters_PX").c_str(), _daughters_PX , (pre+"daughters_PX["+pre+"njet][20]/F").c_str() ) ;
-	  tree->Branch( (pre+"daughters_PY").c_str(), _daughters_PY , (pre+"daughters_PY["+pre+"njet][20]/F").c_str() ) ;
-	  tree->Branch( (pre+"daughters_PZ").c_str(), _daughters_PZ , (pre+"daughters_PZ["+pre+"njet][20]/F").c_str() ) ;
-          tree->Branch( (pre+"daughters_E").c_str(), _daughters_E , (pre+"daughters_E["+pre+"njet][20]/F").c_str() ) ;
-          tree->Branch( (pre+"daughters_M").c_str(), _daughters_M , (pre+"daughters_M["+pre+"njet][20]/F").c_str() ) ;
-          tree->Branch( (pre+"daughters_Q").c_str(), _daughters_Q , (pre+"daughters_Q["+pre+"njet][20]/F").c_str() ) ;
-	  tree->Branch( (pre+"daughters_trackD0").c_str(), _daughters_trackD0 , (pre+"daughters_trackD0["+pre+"njet][20]/F").c_str() ) ;
-          tree->Branch( (pre+"daughters_trackPhi").c_str(), _daughters_trackPhi , (pre+"daughters_trackPhi["+pre+"njet][20]/F").c_str() ) ;
-	  tree->Branch( (pre+"daughters_trackOmega").c_str(), _daughters_trackOmega , (pre+"daughters_trackOmega["+pre+"njet][20]/F").c_str() ) ;
-          tree->Branch( (pre+"daughters_trackZ0").c_str(), _daughters_trackZ0 , (pre+"daughters_trackZ0["+pre+"njet][20]/F").c_str() ) ;
-	  tree->Branch( (pre+"daughters_trackTanLambda").c_str(), _daughters_trackTanLambda , (pre+"daughters_trackTanLambda["+pre+"njet][20]/F").c_str() ) ;
+          tree->Branch( (pre+"ntracks").c_str(), _ntracks , (pre+"ntracks["+pre+"njet]/I").c_str() ) ;
+          tree->Branch( (pre+"nclusters").c_str(), _nclusters , (pre+"nclusters["+pre+"njet]/I").c_str() ) ;
+          tree->Branch( (pre+"daughters_PX").c_str(), _daughters_PX , (pre+"daughters_PX["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_PY").c_str(), _daughters_PY , (pre+"daughters_PY["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_PZ").c_str(), _daughters_PZ , (pre+"daughters_PZ["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_E").c_str(), _daughters_E , (pre+"daughters_E["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_M").c_str(), _daughters_M , (pre+"daughters_M["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_Q").c_str(), _daughters_Q , (pre+"daughters_Q["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_trackD0").c_str(), _daughters_trackD0 , (pre+"daughters_trackD0["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_trackPhi").c_str(), _daughters_trackPhi , (pre+"daughters_trackPhi["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_trackOmega").c_str(), _daughters_trackOmega , (pre+"daughters_trackOmega["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_trackZ0").c_str(), _daughters_trackZ0 , (pre+"daughters_trackZ0["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
+          tree->Branch( (pre+"daughters_trackTanLambda").c_str(), _daughters_trackTanLambda , (pre+"daughters_trackTanLambda["+pre+"njet][LCT_JET_PARTICLES_MAX]/F").c_str() ) ;
    }
 
 
@@ -196,23 +197,23 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 	  _ntracks[ i ] = 0;
 	  _nclusters[ i ] = 0;
 
-	  
-	  for ( size_t j = 0; j < LCT_JET_PARTICLES_MAX ; ++j ) {
+	  if(_writeDaughtersParameters) {
+ 
+      for ( size_t j = 0; j < LCT_JET_PARTICLES_MAX ; ++j ) {
                _daughters_PX[ i ][ j ] = 0 ;
                _daughters_PY[ i ][ j ] = 0 ;
                _daughters_PZ[ i ][ j ] = 0 ;
                _daughters_E[ i ][ j ] = 0 ;
                _daughters_M[ i ][ j ] = 0 ;
                _daughters_Q[ i ][ j ] = 0 ;
-	       _daughters_trackD0[ i ][ j ] = 0;
+               _daughters_trackD0[ i ][ j ] = 0;
                _daughters_trackPhi[ i ][ j ] = 0;
                _daughters_trackOmega[ i ][ j ] = 0;
                _daughters_trackZ0[ i ][ j ] = 0;
                _daughters_trackTanLambda[ i ][ j ] = 0;
-
-	    }
-	    
-   }
+      }
+    }   
+  }
 
    if( !col ) return ;
 
@@ -289,18 +290,16 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 	  _jcov8[ i ] = jet->getCovMatrix()[8];
 	  _jcov9[ i ] = jet->getCovMatrix()[9];
 
-	  if(_writeDaughtersParameters){
-             auto particles = jet->getParticles();
-             _ndaughters[ i ] = particles.size() ;
+	  if (_writeDaughtersParameters) {
+       auto particles = jet->getParticles();
+       _ndaughters[ i ] = particles.size() ;
 
-	     int nparticles = std::min<int>( particles.size() , LCT_JET_PARTICLES_MAX ); // check array limit ...
-              memset( &_jetpfoori[ i ][0], -1, LCT_JET_PARTICLES_MAX ); // init indices
+       int ntracks=0;
+       int nclusters=0;
+       int nparticles = std::min<int>( particles.size() , LCT_JET_PARTICLES_MAX ); // check array limit ...
 
-	     int ntracks=0;
-	     int nclusters=0;
-
-             for( int partid = 0 ; partid < nparticles ; ++partid ) {
-               _daughters_PX[ i ][ partid ] = particles[partid]->getMomentum()[0] ;
+       for( int partid = 0 ; partid < nparticles ; ++partid ) {
+         _daughters_PX[ i ][ partid ] = particles[partid]->getMomentum()[0] ;
 	       _daughters_PY[ i ][ partid ] = particles[partid]->getMomentum()[1] ;
 	       _daughters_PZ[ i ][ partid ] = particles[partid]->getMomentum()[2] ;
 	       _daughters_E[ i ][ partid ] = particles[partid]->getEnergy() ;
@@ -310,7 +309,7 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 	       if (abs(_daughters_Q[ i ][ partid ])>0) ntracks++;
 	       if (abs(_daughters_Q[ i ][ partid ])==0) nclusters++;
 
-               auto tracks = particles[partid]->getTracks();
+         auto tracks = particles[partid]->getTracks();
 	       //std::cout << "ntracks = " << tracks.size() << " charge = " << _daughters_Q[ i ][ partid ] << std::endl;
 
 	       if (tracks.size()>0) {
@@ -321,12 +320,12 @@ void JetBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 		       _daughters_trackTanLambda[ i ][ partid ] = tracks[0]->getTanLambda();
 	       }
 
-             }
-	  _ntracks[ i ] = ntracks ;
-          _nclusters[ i ] = nclusters ;  	  
+      }
+	    _ntracks[ i ] = ntracks ;
+      _nclusters[ i ] = nclusters ;  	  
 	  }
 
-	  // write tagginf parameters if it is enabled
+	  // write tagging parameters if it is enabled
 	  if(_writeTaggingParameters) {
 		 std::vector< float > pidvec = pid->getParticleID (jet, algo).getParameters() ;
 

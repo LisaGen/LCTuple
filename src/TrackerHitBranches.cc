@@ -31,6 +31,7 @@ void TrackerHitBranches::initBranches( TTree* tree, const std::string& pre ){
   tree->Branch( (pre+"thpoz").c_str() , _thpoz , (pre+"thpoz["+pre+"ntrh]/D").c_str() ) ;
   tree->Branch( (pre+"thedp").c_str() , _thedp , (pre+"thedp["+pre+"ntrh]/F").c_str() ) ;
   tree->Branch( (pre+"thtim").c_str() , _thtim , (pre+"thtim["+pre+"ntrh]/F").c_str() ) ;
+  tree->Branch( (pre+"thdet").c_str() , _thdet , (pre+"thdet["+pre+"ntrh]/I").c_str() ) ;
   
   tree->Branch( (pre+"thcov").c_str() , _thcov , (pre+"thcov["+pre+"ntrh][6]/F").c_str() ) ;
 
@@ -94,6 +95,8 @@ void TrackerHitBranches::fill(const EVENT::LCCollection* col, const EVENT::LCCol
     _thpoz[i] = hit->getPosition()[2] ;
     _thedp[i] = hit->getEDep() ;
     _thtim[i] = hit->getTime() ;
+
+    _thdet[i] = (unsigned) hit->getCellID0() & 0x1f ;
 
     for(int j=0;j<6;++j){
       _thcov[ i ][ j ] = hit->getCovMatrix()[j] ;
