@@ -91,7 +91,7 @@ class JetBranches : public CollectionBranches
           bool _writeTaggingParameters {} ;             /* Whether to write parameters from tagging processor */
           bool _writeDaughtersParameters {} ;             /* Whether to write daughters */
 
-      unsigned int    _nj {} ;                     /* Number of Jets */
+      unsigned int    _njet {} ;                     /* Number of Jets */
 
 	  // Deafault jet parameters
 	  float  _jmox[ LCT_JET_MAX ] {} ;             /* Jet X-Momentum */
