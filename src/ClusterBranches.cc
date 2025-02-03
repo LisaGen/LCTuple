@@ -34,7 +34,9 @@ void ClusterBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"clder").c_str() , _clder , (pre+"clder["+pre+"nclu][3]/F").c_str() ) ;
   tree->Branch( (pre+"clsha").c_str() , _clsha , (pre+"clsha["+pre+"nclu][6]/F").c_str() ) ;
   tree->Branch( (pre+"clsde").c_str() , _clsde , (pre+"clsde["+pre+"nclu][12]/F").c_str() ) ;
-
+  tree->Branch( (pre+"clsize").c_str() , _clsize , (pre+"clsize["+pre+"nclu]/I").c_str() ) ;
+  tree->Branch( (pre+"clhitc0").c_str() , _clhitc0 , (pre+"clhitc0["+pre+"nclu][1000]/I").c_str() ) ;  
+  tree->Branch( (pre+"clhitene").c_str() , _clhitene , (pre+"clhitene["+pre+"nclu][1000]/F").c_str() ) ;  
 }
   
 
@@ -61,6 +63,15 @@ void ClusterBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
     
 
     lcio::Cluster* clu = static_cast<lcio::Cluster*>( col->getElementAt(i) ) ;
+    //clu->getCalorimeterHits();
+    //std::cout<<"CLUSTER SIZE: " << clu->getCalorimeterHits().size() <<std::endl;
+    _clsize[i] = clu->getCalorimeterHits().size();
+    for (int j= 0; j<clu->getCalorimeterHits().size(); j++){
+      //std::cout<<clu->getCalorimeterHits(hit)->getEnergy()<<std::endl;
+      _clhitc0[i][j] = clu->getCalorimeterHits()[j]->getCellID0();
+      //std::cout<<"HIT CAC: " << clu->getCalorimeterHits()[j]->getCellID0() <<std::endl;
+      _clhitene[i][j] = clu->getCalorimeterHits()[j]->getEnergy() ;
+    }
 
     //    std::cout << " filling cluster " << i << " from evt: " <<  evt->getEventNumber() << std::endl ;
 
@@ -68,6 +79,7 @@ void ClusterBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
 
     _cltyp[ i ] = clu->getType() ;
     _clene[ i ] = clu->getEnergy() ;
+    //_clsize[ i ] = clu->getSize() ;
     _cleer[ i ] = clu->getEnergyError() ;
     _clpox[ i ] = clu->getPosition()[0] ;
     _clpoy[ i ] = clu->getPosition()[1] ;
@@ -97,25 +109,3 @@ void ClusterBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* evt )
   }
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

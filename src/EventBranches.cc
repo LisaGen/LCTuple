@@ -34,7 +34,8 @@ void EventBranches::initBranches( TTree* tree, const std::string& pre){
 
 void EventBranches::fill(const EVENT::LCCollection* /*col*/, EVENT::LCEvent* evt ){
   
-  _evevt = evt->getEventNumber()  ;    
+  _evevt = evt->getEventNumber()  ;  
+  std::cout<<  "Event: " << evt->getEventNumber() << std::endl;
   _evrun = evt->getRunNumber()  ;
   _evwgt = evt->getWeight()  ;
   _evtim = evt->getTimeStamp()  ;

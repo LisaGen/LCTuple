@@ -54,6 +54,7 @@ void MCParticleFromRelationBranches::initBranches( TTree* tree, const std::strin
   tree->Branch( (pre+"mcfrda3").c_str() , _mcfrda3 , (pre+"mcfrda3["+pre+"nmcfrp]/I").c_str() ) ;
   tree->Branch( (pre+"mcfrda4").c_str() , _mcfrda4 , (pre+"mcfrda4["+pre+"nmcfrp]/I").c_str() ) ;
   tree->Branch( (pre+"mcfrover").c_str() , _mcfrover , (pre+"mcfrover["+pre+"nmcfrp]/I").c_str() ) ;
+  
   tree->Branch( (pre+"mcfrevis").c_str() , &_mcfrevis , (pre+"mcfrevis/F").c_str() ) ;
   tree->Branch( (pre+"mcfrmmis").c_str() , &_mcfrmmis , (pre+"mcfrmmis/F").c_str() ) ;
   tree->Branch( (pre+"mcfrEmiss").c_str() , &_mcfrEmiss , (pre+"mcfrEmiss/F").c_str() ) ;
@@ -122,6 +123,7 @@ void MCParticleFromRelationBranches::fill(const EVENT::LCCollection* colRel, con
     _mcfrcf0[ i ] = mcfrp->getColorFlow()[0] ;
     _mcfrcf1[ i ] = mcfrp->getColorFlow()[1] ;
     _mcfrover[ i ] = mcfrp->isOverlay();
+    
     if(!mcfrp->isOverlay())
     {
     	 tempevis += _mcfrene[i] ;

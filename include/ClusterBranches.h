@@ -49,7 +49,9 @@ private:
   float _clder[ LCT_CLUSTER_MAX ][ 3] {};  // direction error cov matrix
   float _clsha[ LCT_CLUSTER_MAX ][ 6] {};  // shape variable - fixed  to 6 for now 
   float _clsde[ LCT_CLUSTER_MAX ][12] {};  // subdetector fractions - limited to 12 
-  
+  int _clsize[ LCT_CLUSTER_MAX ]{};
+  float _clhitene[ LCT_CLUSTER_MAX ][1000] {};
+  int _clhitc0[ LCT_CLUSTER_MAX ][1000] {};
   // ignored for now:
   // EVENT::ClusterVec        _clusters ;
   // EVENT::CalorimeterHitVec _hits ;

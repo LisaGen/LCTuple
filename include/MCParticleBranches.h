@@ -64,6 +64,7 @@ private:
   int    _mcda2[ LCT_MCPARTICLE_MAX ] {};
   int    _mcda3[ LCT_MCPARTICLE_MAX ] {};
   int    _mcda4[ LCT_MCPARTICLE_MAX ] {};
+  int    _mcdeccal[ LCT_MCPARTICLE_MAX ] {} ;
 } ;
 
 #endif

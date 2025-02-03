@@ -49,6 +49,7 @@ void MCParticleBranches::initBranches( TTree* tree, const std::string& pre){
   tree->Branch( (pre+"mcda2").c_str() , _mcda2 , (pre+"mcda2["+pre+"nmcp]/I").c_str() ) ;
   tree->Branch( (pre+"mcda3").c_str() , _mcda3 , (pre+"mcda3["+pre+"nmcp]/I").c_str() ) ;
   tree->Branch( (pre+"mcda4").c_str() , _mcda4 , (pre+"mcda4["+pre+"nmcp]/I").c_str() ) ;
+  tree->Branch( (pre+"mcdeccal").c_str() , _mcdeccal , (pre+"mcdeccal["+pre+"nmcp]/I").c_str() ) ;
 }
   
 
@@ -94,6 +95,8 @@ void MCParticleBranches::fill(const EVENT::LCCollection* col, EVENT::LCEvent* ev
     _mcspz[ i ] = mcp->getSpin()[2] ;
     _mccf0[ i ] = mcp->getColorFlow()[0] ;
     _mccf1[ i ] = mcp->getColorFlow()[1] ;
+    _mcdeccal[ i ]= mcp->isDecayedInCalorimeter();
+    //std::cout << "isDecayedInCalorimeter" <<_mcdeccal[ i ] << std::endl;
     
     const lcio::MCParticleVec& p = mcp->getParents() ;
 
